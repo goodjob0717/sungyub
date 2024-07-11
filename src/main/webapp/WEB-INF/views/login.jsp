@@ -7,7 +7,8 @@
     <title>로그인</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            /* font-family: Arial, sans-serif; */
+            font-family: 'Nanum Gothic', sans-serif;
             /* background-color: #E6F0F8; */
             background-color: #DCDCDC;
             margin: 0;

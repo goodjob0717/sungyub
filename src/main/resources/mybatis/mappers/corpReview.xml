@@ -1,0 +1,23 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.dao.CorpReviewDAO">
+
+	<select id="reviewList" resultType="com.boot.dto.CorpReviewDTO">
+        select
+            r.review_No AS reviewNo
+           ,r.user_id AS userId
+           ,r.corp_name AS corpName
+           ,r.review_coment AS reviewComment
+           ,k.corp_keyword AS corpKeyword
+           ,w.corp_welfare AS corpWelfare
+        from
+            corp_review r
+        left join 
+            corp_keywordList k ON r.review_No = k.review_No
+        left join
+            corp_welfare w ON r.review_No = w.review_No
+    </select>
+    
+</mapper>

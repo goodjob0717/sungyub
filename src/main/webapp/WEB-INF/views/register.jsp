@@ -7,7 +7,9 @@ pageEncoding="UTF-8"%>
     <title>회원가입</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            /* font-family: Arial, sans-serif; */
+            font-family: 'Nanum Gothic', sans-serif;
+            /* background-color: #E6F0F8; */
             background-color: #DCDCDC;
             margin: 0;
             padding: 0;
@@ -164,11 +166,11 @@ pageEncoding="UTF-8"%>
 					<div class="validation-message">이름을 입력하세요.</div>
 				</div>
 				<div class="form-group">
-					<input type="text" id="user_birthNo" maxlength="6" name="user_birthNo" placeholder="*주민번호" style="width: 46%;">
+					<input type="text" id="user_birthNo" maxlength="6" name="user_birthNo" placeholder="*주민번호" style="width: 45%;">
                     <div class="validation-message">주민번호 앞자리를 입력하세요.</div>
 					&nbsp; - &nbsp;
 					<span>
-                        <input type="text" id="user_sex" name="user_sex" maxlength="7" style="width: 46%;" oninput="maskUserSex()">
+                        <input type="text" id="user_sex" name="user_sex" maxlength="7" style="width: 45%;" oninput="maskUserSex()">
                         <div class="validation-message">주민번호 뒷자리를 입력하세요.</div>
 					</span>
 				</div>
