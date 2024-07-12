@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="header.jsp" %>
+<link rel="stylesheet" type="text/css" href="<c:url value='/css/main.css' />">
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -11,14 +12,21 @@
             font-family: 'Nanum Gothic', sans-serif;
             font-size: 12px;
             color: #696B86;
-            background-color: #DCDCDC;
+            background-color: #F0F8FF;
             margin: 0;
             padding: 0;
+        }
+        /* 페이지 콘텐츠 영역을 헤더와 푸터 사이에 배치 */
+        .content {
+            padding-top: 12rem;  /* 헤더 높이 + 네비게이션 높이 */
+            padding-bottom: 12rem;  /* 푸터 높이만큼 패딩 추가 */
+            min-height: calc(100vh - 17rem);  /* 전체 높이에서 헤더와 푸터 높이만큼 빼기 */
         }
         .container {
             width: 1000px;
             margin: 0 auto;
             padding: 20px;
+            border-radius: 10px;
             background-color: #ffffff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -27,14 +35,10 @@
             justify-content: space-between;
             margin-bottom: 50px;
         }
-        .search-container {
+        .reviewSearch-container {
             border: 1px solid #b1b1b1;
             padding: 30px;
             border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .footer {
-            text-align: center;
             margin-bottom: 20px;
         }
         .search-reviews {
@@ -156,10 +160,10 @@
             background-color: #AFDBF5;
             border-radius: 5px;
             cursor: pointer;
-            /* float: right; */
         }
         .review-keysearch button:hover {
             background-color: #007bff;
+            color: #fff;
         }
         .review-list {
             display: flex;
@@ -179,7 +183,7 @@
             flex-grow: 1;
         }
         .review-content p {
-            margin: 0;
+            margin: 5px;
         }
         .view-count {
             margin-right: 20px;
@@ -192,84 +196,130 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .div_page ul{
+			display: flex;
+			list-style: none;
+		}
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<div class="container">
-    <div class="flex-container">
-        <div class="popular-reviews">
-            <h2>인기 기업리뷰</h2>
-            <hr>
-            <div class="review-cards">
-                <c:forEach var="hotreview" items="${hotreviews}">
-                    <div class="card">
+<!-- 헤더와 푸터에 의해 가려지지 않도록 하는 부분 -->
+<div class="content">
+    <div class="container">
+        <div class="flex-container">
+            <div class="popular-reviews">
+                <h2>인기 기업리뷰</h2>
+                <hr>
+                <div class="review-cards">
+                    <c:forEach var="hotreview" items="${hotreviews}">
+                        <div class="card">
+                            <img src="기업로고.png" alt="기업 로고">
+                            <p>${hotreview.corp_name}</p>
+                            <p>${hotreview.corp_type}</p>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+
+            <div class="search-reviews">
+                <h1>기업 리뷰</h1><br>
+                <p>재직자가 알려주는<br>리얼한 기업리뷰</p><br>
+                <input type="text" placeholder="어떤 기업의 리뷰가 궁금하신가요?">
+                <button>🔍</button>
+            </div>
+        </div>
+
+        <div class="reviewSearch-container">
+            <div class="review-keysearch">
+                <h2>키워드로 리뷰 찾기</h2>
+                <div class="keywords">
+                    <div># 업무 복장 자유로움</div>
+                    <div># 연봉 인상률 높음</div>
+                    <div># 남성직원 비율 높음</div>
+                    <div># 여성직원 비율 높음</div>
+                    <div># 복지제도</div>
+                    <div># 워라벨</div>
+                    <div># 자율출퇴근</div>
+                    <div># 회식없음</div>
+                    <div># 수평적 조직문화</div>
+                    <div># 경력 개발 지원</div>
+                    <div># 다양한 프로젝트</div>
+                    <div># 사내 교육 프로그램</div>
+                    <div># 유연 근무제</div>
+                    <div># 재택 근무 가능</div>
+                    <div># 장기 근속 포상</div>
+                    <div># 해외 출장 기회</div>
+                    <div># 멘토링 프로그램</div>
+                    <div># 사내 동호회 지원</div>
+                    <div># 자기 계발 지원</div>
+                    <div># 직원 휴게실</div>
+                    <div># 건강 관리 프로그램</div>
+                </div>
+                <h3>선택된 키워드</h3>
+                <div class="selected-keywords">
+                    <!-- 선택된 키워드가 여기에 추가됨 -->
+                </div>
+                <button id="searchBtn">조건 검색</button>
+            </div>
+
+            <div class="reviews">
+                <!-- 검색 결과가 여기에 표시됨 -->
+                <c:forEach var="review" items="${reviews}">
+                    <div class="review-list">
                         <img src="기업로고.png" alt="기업 로고">
-                        <p>${hotreview.corp_name}</p>
-                        <p>${hotreview.corp_type}</p>
+                        <div class="review-content">
+                            <p>${review.corp_name}</p>
+                            <p>${review.corp_type}</p>
+                            <p>#키워드 #키워드 #키워드</p>
+                        </div>
+                        <button class="favorite-button">관심 기업 ☆</button>
                     </div>
                 </c:forEach>
             </div>
-        </div>
 
-        <div class="search-reviews">
-            <h1>기업 리뷰</h1><br>
-            <p>재직자가 알려주는<br>리얼한 기업리뷰</p><br>
-            <input type="text" placeholder="어떤 기업의 리뷰가 궁금하신가요?">
-            <button>🔍</button>
-        </div>
-    </div>
-
-    <div class="search-container">
-        <div class="review-keysearch">
-            <h2>키워드로 리뷰 찾기</h2>
-            <div class="keywords">
-                <div># 업무 복장 자유로움</div>
-                <div># 연봉 인상률 높음</div>
-                <div># 남성직원 비율 높음</div>
-                <div># 여성직원 비율 높음</div>
-                <div># 복지제도</div>
-                <div># 워라벨</div>
-                <div># 자율출퇴근</div>
-                <div># 회식없음</div>
+            <div class="div_page">
+                <ul>
+                    <c:if test="${pageMaker.prev}">
+                        <!-- <li>[Previous]</li> -->
+                        <li class="paginate_button">
+                            <a href="${pageMaker.startpage - 1}">
+                                [Previous]
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:forEach var="num" begin="${pageMaker.startpage}" end="${pageMaker.endpage}">
+                        <!-- <li>[${num}]</li> -->
+                        <!-- <li ${pageMaker.cri.pageNum == num ? "style='color: red;'" : ""}> -->
+                        <li class="paginate_button" ${pageMaker.cri.pageNum == num ? "style='background-color: yellow;'" : ""}>
+                            <!-- [${num}] -->
+                            <a href="${num}">
+                                [${num}]
+                            </a>
+                        </li>
+                    </c:forEach>
+                    <c:if test="${pageMaker.next}">
+                        <!-- <li>[Next]</li> -->
+                        <li class="paginate_button">
+                            <a href="${pageMaker.endpage + 1}">
+                                [Next]
+                            </a>
+                        </li>
+                    </c:if>
+                </ul>
             </div>
-            <h3>선택된 키워드</h3>
-            <div class="selected-keywords">
-                <!-- 선택된 키워드가 여기에 추가됨 -->
-            </div>
-            <button id="searchBtn">조건 검색</button>
+        
+            <form id="actionForm" method="get">
+                <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+                <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+                <!-- 페이징 검색시 페이지 번호 클릭할 때 필요한 파라미터 -->
+                <input type="hidden" name="type" value="${pageMaker.cri.type}">
+                <input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+            </form>
         </div>
-
-        <div class="reviews">
-            <!-- 검색 결과가 여기에 표시됨 -->
-            <c:forEach var="review" items="${reviews}">
-                <div class="review-list">
-                    <img src="기업로고.png" alt="기업 로고">
-                    <div class="review-content">
-                        <p>${review.corp_name}</p>
-                        <p>${review.corp_type}</p>
-                        <p>#키워드 #키워드 #키워드</p>
-                    </div>
-                    <div class="view-count">(조회수) ${review.views}</div>
-                    <button class="favorite-button">관심 기업 ☆</button>
-                </div>
-            </c:forEach>
-        </div>
-
-        <div class="pagination">
-            <a href="#">이전</a>
-            <a href="#">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">다음</a>
-        </div>
-    </div>
-
-    <div class="footer">
-        <p>&copy; 2024 기업 리뷰. All rights reserved.</p>
     </div>
 </div>
-
+<%@ include file="footer.jsp" %>
 <script>
     $(document).ready(function() {
         const keywords = $('.keywords div');
@@ -313,7 +363,7 @@
             });
 
             $.ajax({
-                url: '/search',
+                url: '/searchKeywords',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ keywords: keywordsArray }),
@@ -327,7 +377,6 @@
                                 <p>${review.corp_type}</p>
                                 <p>#키워드 #키워드 #키워드</p>
                             </div>
-                            <div class="view-count">(조회수) ${review.views}</div>
                             <button class="favorite-button">관심 기업 ☆</button>
                         `);
                         reviewsContainer.append(reviewDiv);
@@ -339,6 +388,47 @@
             });
         });
     });
+
+	//페이지 번호 처리
+    var actionForm = $("#actionForm");
+
+	// $(".paginate_button").on("click", function (e){
+	$(".paginate_button a").on("click", function (e){
+		//기본 동작 막음: 페이지 링크를 통해서 이동
+		e.preventDefault();
+		console.log("click~!!!");
+		console.log("@# href=>"+$(this).attr("href"));
+
+		// 게시글 클릭후 뒤로가기 누른 후 다른 게시글 클릭할 때 &corpInfo_No=번호 계속 누적되는거 방지
+		var bno = actionForm.find("input[name='corpInfo_No']").val();
+		if(bno != ""){
+			actionForm.find("input[name='corpInfo_No']").remove();
+		}
+
+		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+		// actionForm.submit();
+		actionForm.attr("action", "reviews").submit();
+	});//end of paginate_button click
+	
+	$(".move_link").on("click", function(e){
+		e.preventDefault();
+
+		console.log("@# move_link click~!!!");
+		console.log("@# href=>"+$(this).attr("href"));
+		
+		var targetBno = $(this).attr("href");
+
+		// 게시글 클릭후 뒤로가기 누른 후 다른 게시글 클릭할 때 &corpInfo_No=번호 계속 누적되는거 방지
+		var bno = actionForm.find("input[name='corpInfo_No']").val();
+		if(bno != ""){
+			actionForm.find("input[name='corpInfo_No']").remove();
+		}
+
+		// "content_view?corpInfo_No=${dto.corpInfo_No}" 를 actionForm 으로 처리
+		actionForm.append("<input type='hidden' name='corpInfo_No' value='"+targetBno+"'>");
+		// actionForm.submit();
+		actionForm.attr("action", "content_view").submit();
+	});//end of move_link click
 </script>
 </body>
 </html>

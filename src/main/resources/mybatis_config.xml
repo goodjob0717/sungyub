@@ -6,6 +6,8 @@
 	<mappers>
 		<mapper resource="mybatis/mappers/corpMem.xml" />
 		<mapper resource="mybatis/mappers/userMem.xml" />
+		<mapper resource="mybatis/mappers/corpReview.xml" />
+		<mapper resource="mybatis/mappers/page.xml" />
 	</mappers>
 </configuration>
 

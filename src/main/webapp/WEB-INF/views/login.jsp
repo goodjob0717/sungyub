@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -7,10 +6,8 @@
     <title>로그인</title>
     <style>
         body {
-            /* font-family: Arial, sans-serif; */
             font-family: 'Nanum Gothic', sans-serif;
-            /* background-color: #E6F0F8; */
-            background-color: #DCDCDC;
+            background-color: #F0F8FF;
             margin: 0;
             padding: 0;
             display: flex;

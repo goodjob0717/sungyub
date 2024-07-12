@@ -1,24 +1,13 @@
 package com.boot.service;
 
+import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.boot.dao.CorpReviewDAO;
 import com.boot.dto.CorpReviewDTO;
 
-@Service
-public class CorpReviewService {
-	
-	@Autowired
-	private CorpReviewDAO corpReviewDAO;
-	
-	public List<CorpReviewDTO> reviewList() {
-		return corpReviewDAO.reviewList();
-	}
-	
-	public List<CorpReviewDTO> searchKeywords(List<String> keywords) {
-		return corpReviewDAO.searchKeywords(keywords);
-	}
+public interface CorpReviewService {
+	public List<CorpReviewDTO> searchKeywords(List<String> keywords);// 아직 미구현
+	public void writeReview(@RequestParam HashMap<String, String> param);
 }

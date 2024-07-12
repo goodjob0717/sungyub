@@ -3,7 +3,8 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.boot.dao.CorpReviewDAO">
-
+	
+<!--	아직 미구현-->
 	<select id="reviewList" resultType="com.boot.dto.CorpReviewDTO">
         select
             r.review_No AS reviewNo
@@ -19,5 +20,30 @@
         left join
             corp_welfare w ON r.review_No = w.review_No
     </select>
+    
+    <insert id="writeReview">
+    	<selectKey keyProperty="review_No" order="BEFORE" resultType="int">
+	    	select ifnull(max(review_No),0)+1 from corp_review
+    	</selectKey>
+		insert into corp_review(review_No, user_id, corp_name, review_coment)-->
+				select ifnull(max(review_No),0)+1 , #{user_id}, #{corp_name}, #{review_coment} from corp_review
+    </insert>
+    
+    <!-- 마지막 삽입된 review_No 가져오기 -->
+    <select id="getReviewNo" resultType="int">
+        select max(review_No) from corp_review
+    </select>
+
+    <!-- 키워드 삽입 -->
+    <insert id="writeKeywordList">
+        insert into corp_keywordList(review_No, corp_name, corp_keyword)
+            values (#{review_No}, #{corp_name}, #{corp_keyword})
+    </insert>
+
+    <!-- 복지 항목 삽입 -->
+    <insert id="writeWelfare">
+        insert into corp_welfare(review_No, corp_name, corp_welfare)
+            values (#{review_No}, #{corp_name}, #{corp_welfare})
+    </insert>
     
 </mapper>
