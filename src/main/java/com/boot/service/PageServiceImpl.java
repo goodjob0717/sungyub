@@ -38,4 +38,10 @@ public class PageServiceImpl implements PageService{
 		
 		return total;
 	}
+
+	@Override
+	public ArrayList<CorpInfoDTO> corpKeywordsList(String corp_name) {
+		
+		return null;
+	}
 }

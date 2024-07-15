@@ -40,6 +40,9 @@
             padding: 30px;
             border-radius: 10px;
             margin-bottom: 20px;
+            justify-content: center;
+            align-items: center;
+            /* text-align: center; */
         }
         .search-reviews {
             border: 1px solid #b1b1b1;
@@ -144,15 +147,6 @@
             color: #000000;
             cursor: pointer;
         }
-        .pagination {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .pagination a {
-            margin: 0 5px;
-            text-decoration: none;
-            color: #333;
-        }
         .review-keysearch button {
             padding: 8px;
             font-size: 12px;
@@ -199,6 +193,9 @@
         .div_page ul{
 			display: flex;
 			list-style: none;
+            justify-content: center;
+            gap: 5px;
+            color: #000000;
 		}
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -271,7 +268,12 @@
                         <div class="review-content">
                             <p>${review.corp_name}</p>
                             <p>${review.corp_type}</p>
-                            <p>#키워드 #키워드 #키워드</p>
+                            <!-- <p>
+                                <c:forEach var="keyword" items="${review.keywords}">
+                                    #${keyword} 
+                                </c:forEach>
+                            </p> -->
+                            <input type="hidden" name="corpInfo_No" value="${review.corpInfo_No}">
                         </div>
                         <button class="favorite-button">관심 기업 ☆</button>
                     </div>
@@ -289,17 +291,14 @@
                         </li>
                     </c:if>
                     <c:forEach var="num" begin="${pageMaker.startpage}" end="${pageMaker.endpage}">
-                        <!-- <li>[${num}]</li> -->
-                        <!-- <li ${pageMaker.cri.pageNum == num ? "style='color: red;'" : ""}> -->
                         <li class="paginate_button" ${pageMaker.cri.pageNum == num ? "style='background-color: yellow;'" : ""}>
-                            <!-- [${num}] -->
+                            <!-- <a href="${num}"> -->
                             <a href="${num}">
                                 [${num}]
                             </a>
                         </li>
                     </c:forEach>
                     <c:if test="${pageMaker.next}">
-                        <!-- <li>[Next]</li> -->
                         <li class="paginate_button">
                             <a href="${pageMaker.endpage + 1}">
                                 [Next]
@@ -392,7 +391,6 @@
 	//페이지 번호 처리
     var actionForm = $("#actionForm");
 
-	// $(".paginate_button").on("click", function (e){
 	$(".paginate_button a").on("click", function (e){
 		//기본 동작 막음: 페이지 링크를 통해서 이동
 		e.preventDefault();
@@ -407,7 +405,7 @@
 
 		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
 		// actionForm.submit();
-		actionForm.attr("action", "reviews").submit();
+		actionForm.attr("action", "corpReviewList").submit();
 	});//end of paginate_button click
 	
 	$(".move_link").on("click", function(e){

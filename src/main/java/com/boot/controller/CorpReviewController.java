@@ -35,13 +35,21 @@ public class CorpReviewController {
 	@GetMapping("/corpReviewList")
     public String corpReviewList(Criteria cri, Model model) {
     	log.info("@# corpReviewList");
+    	log.info("@# cri=>"+cri);
         
     	List<CorpInfoDTO> reviews = pageService.listWithPaging(cri);
     	int total = pageService.getTotalCount(cri);
 		log.info("@# total=>"+total);
+		
+		// reviews 리스트에서 각 CorpInfoDTO의 corp_name을 추출
+	    for (CorpInfoDTO review : reviews) {
+	        log.info("@# corp_name=>" + review.getCorp_name());
+	    }
     	
         model.addAttribute("reviews", reviews);
         model.addAttribute("pageMaker", new PageDTO(total, cri));
+        
+        
         
         return "corpReviewList";
     }
