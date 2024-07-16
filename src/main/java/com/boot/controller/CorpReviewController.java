@@ -20,7 +20,6 @@ import com.boot.dto.ReviewCriteria;
 import com.boot.dto.ReviewPageDTO;
 import com.boot.service.CorpReviewServiceImpl;
 import com.boot.service.ReviewPageService;
-import com.mysql.cj.Session;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,11 +47,11 @@ public class CorpReviewController {
     	
 		// reviews 리스트에서 각 CorpInfoDTO의 corp_name을 추출
 		for (CorpInfoDTO review : reviews) {
-			log.info("@# corp_name=>" + review.getCorp_name());
+//			log.info("@# corp_name=>" + review.getCorp_name());
 
 			List<String> corpKeywords = pageService.corpKeywordsList(review.getCorp_name());
 			review.setCorp_keyword(corpKeywords);
-			log.info("@# corpKeywords=>" + corpKeywords);
+//			log.info("@# corpKeywords=>" + corpKeywords);
 		}
         
 		log.info("@# reviews=>"+reviews);
@@ -96,8 +95,7 @@ public class CorpReviewController {
         // 선택된 키워드로 필터링된 리뷰를 가져옴
         List<CorpInfoDTO> filteredReviews = corpreviewService.filterReviews(keywords);
         log.info("@# filteredReviews=>"+filteredReviews);
-        
-        model.addAttribute("filteredReviews", filteredReviews);
+        log.info("@# filteredReviews=>"+filteredReviews.get(0).getCorp_name());
         
         return filteredReviews;
     }

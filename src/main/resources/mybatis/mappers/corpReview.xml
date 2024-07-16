@@ -5,10 +5,10 @@
 <mapper namespace="com.boot.dao.CorpReviewDAO">
 	
 	<select id="filterReviews" parameterType="list" resultType="com.boot.dto.CorpInfoDTO">
-        SELECT DISTINCT *
+        SELECT DISTINCT corp_name, corp_type
 	    FROM company_list
 	    WHERE corp_name IN (
-	        SELECT corp_name
+	        SELECT DISTINCT corp_name
 	        FROM corp_keywordList
 	        WHERE corp_keyword IN
 	        <foreach item="keyword" collection="keywords" open="(" separator="," close=")">

@@ -281,7 +281,6 @@
                 </div>
                 <button id="searchBtn">조건 검색</button>
             </div>
-
             <div class="reviews">
                 <!-- 검색 결과가 여기에 표시됨 -->
                 <c:forEach var="review" items="${reviews}">
@@ -303,7 +302,6 @@
             <div class="div_page">
                 <ul>
                     <c:if test="${pageMaker.prev}">
-                        <!-- <li>[Previous]</li> -->
                         <li class="paginate_button">
                             <a href="${pageMaker.startpage - 1}">
                                 [Previous]
@@ -312,7 +310,6 @@
                     </c:if>
                     <c:forEach var="num" begin="${pageMaker.startpage}" end="${pageMaker.endpage}">
                         <li class="paginate_button" ${pageMaker.cri.pageNum == num ? "style='background-color: yellow;'" : ""}>
-                            <!-- <a href="${num}"> -->
                             <a href="${num}">
                                 [${num}]
                             </a>
@@ -381,29 +378,30 @@
                 return $(keyword).text().replace('X', '').trim();
             });
 
+            console.log('Keywords Array:', keywordsArray); // 디버깅용 로그
+
             $.ajax({
                 url: '/filterReviews',
                 method: 'POST',
                 contentType: 'application/json',
-                // data: JSON.stringify({ keywords: keywordsArray }),
                 data: JSON.stringify(keywordsArray), // 배열 형식으로 전송
                 success: function(data) {
-                    reviewsContainer.empty();
+                    console.log('Response Data:', data); // 디버깅용 로그
+                    console.log('Response Data[0].corp_name:', data[0].corp_name); // 디버깅용 로그
+                    reviewsContainer.empty(); // 리뷰 기업 리스트 빈공간으로 만듬
                     $.each(data, function(index, review) {
-                        const reviewDiv = $('<div class="review-list"></div>').html(`
+                        // console.log('Response review:', review); // 디버깅용 로그
+                        console.log('Response review.corp_name:', review.corp_name); // 디버깅용 로그
+                        const reviewDiv = `
+                        review.corp_name
                         <div class="review-list">
-                        <img src="기업로고.png" alt="기업 로고">
+                            <img src="기업로고.png" alt="기업 로고">
                             <div class="review-content">
-                                <p>${filteredReviews.corp_name}</p>
-                                <p>${filteredReviews.corp_type}</p>
-                                <p>
-                                    <c:forEach var="corp_keyword" items="${filteredReviews.corp_keyword}">
-                                        #${corp_keyword} &nbsp;
-                                    </c:forEach>
-                                </p>
+                                <p><a class="move_link" href="${review.corp_name}">${review.corp_name}</a></p>
+                                <p>${review.corp_type}</p>
                             </div>
                         </div>
-                        `);
+                        `;
                         reviewsContainer.append(reviewDiv);
                     });
                 },
