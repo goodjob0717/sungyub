@@ -4,21 +4,17 @@
 
 <mapper namespace="com.boot.dao.CorpReviewDAO">
 	
-<!--	아직 미구현-->
-	<select id="reviewList" resultType="com.boot.dto.CorpReviewDTO">
-        select
-            r.review_No AS reviewNo
-           ,r.user_id AS userId
-           ,r.corp_name AS corpName
-           ,r.review_coment AS reviewComment
-           ,k.corp_keyword AS corpKeyword
-           ,w.corp_welfare AS corpWelfare
-        from
-            corp_review r
-        left join 
-            corp_keywordList k ON r.review_No = k.review_No
-        left join
-            corp_welfare w ON r.review_No = w.review_No
+	<select id="filterReviews" parameterType="list" resultType="com.boot.dto.CorpInfoDTO">
+        SELECT DISTINCT *
+	    FROM company_list
+	    WHERE corp_name IN (
+	        SELECT corp_name
+	        FROM corp_keywordList
+	        WHERE corp_keyword IN
+	        <foreach item="keyword" collection="keywords" open="(" separator="," close=")">
+	            #{keyword}
+	        </foreach>
+	    )
     </select>
     
     <insert id="writeReview">

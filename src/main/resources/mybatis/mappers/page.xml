@@ -4,6 +4,12 @@
 
 <mapper namespace="com.boot.dao.PageDAO">
 
+<!--	<sql id="criteria">-->
+<!--		<if test='type == null'>-->
+<!--			where corp_name like concat('%', #{keyword},'%')-->
+<!--		</if>-->
+<!--	</sql>-->
+
     <select id="listWithPaging" resultType="com.boot.dto.CorpInfoDTO">
     <![CDATA[ 
 		select rownum, corpInfo_No, corp_name, corp_type
@@ -19,12 +25,80 @@
 		where rownum > (#{pageNum}-1) * #{amount} 
 		]]>
     </select>
+
+<!--		<select id="listWithPaging" resultType="com.boot.dto.CorpInfoDTO">-->
+<!--		    <![CDATA[-->
+<!--		        <choose>-->
+<!--		            <when test="keywords != null and keywords.size() > 0">-->
+<!--		                SELECT rownum, corpInfo_No, corp_name, corp_type-->
+<!--		                FROM (-->
+<!--		                    SELECT rownum, corpInfo_No, corp_name, corp_type-->
+<!--		                    FROM (-->
+<!--		                        SELECT row_number() OVER (ORDER BY corpInfo_No DESC) AS rownum-->
+<!--		                             , corpInfo_No-->
+<!--		                             , corp_name-->
+<!--		                             , corp_type-->
+<!--		                        FROM company_list-->
+<!--		                        WHERE corp_name IN (-->
+<!--		                            SELECT corp_name-->
+<!--		                            FROM corp_keywordList-->
+<!--		                            WHERE corp_keyword IN-->
+<!--		                            <foreach item="keyword" collection="keywords" open="(" separator="," close=")">-->
+<!--		                                #{keyword}-->
+<!--		                            </foreach>-->
+<!--		                        )-->
+<!--		                        ORDER BY corpInfo_No DESC-->
+<!--		                    ) a-->
+<!--		                    WHERE rownum <= (#{pageNum} * #{amount})-->
+<!--		                ) aa-->
+<!--		                WHERE rownum > (#{pageNum} - 1) * #{amount}-->
+<!--		            </when>-->
+<!--		            <otherwise>-->
+<!--		                SELECT rownum, corpInfo_No, corp_name, corp_type-->
+<!--		                FROM (-->
+<!--		                    SELECT rownum, corpInfo_No, corp_name, corp_type-->
+<!--		                    FROM (-->
+<!--		                        SELECT row_number() OVER (ORDER BY corpInfo_No DESC) AS rownum-->
+<!--		                             , corpInfo_No-->
+<!--		                             , corp_name-->
+<!--		                             , corp_type-->
+<!--		                        FROM company_list-->
+<!--		                        ORDER BY corpInfo_No DESC-->
+<!--		                    ) a-->
+<!--		                    WHERE rownum <= (#{pageNum} * #{amount})-->
+<!--		                ) aa-->
+<!--		                WHERE rownum > (#{pageNum} - 1) * #{amount}-->
+<!--		            </otherwise>-->
+<!--		        </choose>-->
+<!--		    ]]>-->
+<!--		</select>-->
     
-    <select id="corpKeywordsList" resultType="com.boot.dto.CorpInfoDTO">
-		select corp_keyword from corp_keywordList where corp_name = #{corp_name};
+<!--    <select id="corpKeywordsList" resultType="com.boot.dto.CorpInfoDTO">-->
+    <select id="corpKeywordsList" resultType="String">
+		select corp_keyword from corp_keywordList where corp_name=#{corp_name};
     </select>
     
     <select id="getTotalCount" resultType="int">
 		select count(*) from company_list
     </select>
+    
+<!--    <select id="listWithSearch" resultType="com.boot.dto.CorpInfoDTO">-->
+<!--    <![CDATA[ -->
+<!--		select rownum, corpInfo_No, corp_name, corp_type-->
+<!--			from (select rownum, corpInfo_No, corp_name, corp_type -->
+<!--			from (select row_number() over(order by corpInfo_No desc) as rownum-->
+<!--										,corpInfo_No-->
+<!--										,corp_name-->
+<!--										,corp_type -->
+<!--									  from company_list-->
+<!--									  ]]>-->
+<!--									  <include refid="criteria"></include>-->
+<!--									  <![CDATA[-->
+<!--									  order by corpInfo_No desc) a-->
+<!--			where rownum <= (#{pageNum} * #{amount})-->
+<!--				)aa-->
+<!--		where rownum > (#{pageNum}-1) * #{amount} -->
+<!--		]]>-->
+<!--    </select>-->
+    
 </mapper>

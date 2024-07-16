@@ -1,6 +1,7 @@
 package com.boot.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,30 @@ public class PageServiceImpl implements PageService{
 	}
 
 	@Override
-	public ArrayList<CorpInfoDTO> corpKeywordsList(String corp_name) {
-		
-		return null;
+	public ArrayList<String> corpKeywordsList(String corp_name) {
+	    log.info("@# PageServiceImpl corpKeywordsList");
+
+	    PageDAO dao = sqlSession.getMapper(PageDAO.class);
+	    ArrayList<String> corpKeywords = new ArrayList<>();
+
+	    // dao.corpKeywordsList(corp_name)가 반환하는 리스트를 반복문으로 처리
+	    List<String> keywords = dao.corpKeywordsList(corp_name);
+	    for (String keyword : keywords) {
+	        corpKeywords.add(keyword);
+	        log.info("@# corpKeywords=>" + keyword);
+	    }
+
+	    return corpKeywords;
 	}
+
+//	@Override
+//	public ArrayList<CorpInfoDTO> listWithSearch(Criteria cri) {
+//		log.info("@# PageServiceImpl listWithSearch");
+//		log.info("@# cri=>"+cri);
+//		
+//		PageDAO dao = sqlSession.getMapper(PageDAO.class);
+//		ArrayList<CorpInfoDTO> list=dao.listWithSearch(cri);
+//		
+//		return list;
+//	}
 }

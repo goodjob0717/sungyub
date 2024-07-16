@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.boot.dao.CorpReviewDAO;
 import com.boot.dto.CorpInfoDTO;
-import com.boot.dto.CorpReviewDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,10 +23,13 @@ public class CorpReviewServiceImpl implements CorpReviewService{
 	private CorpReviewDAO corpReviewDAO;
 	
 	@Override
-	// 아직 미구현
-	public List<CorpReviewDTO> searchKeywords(List<String> keywords) {
-		log.info("@# CorpReviewServiceImpl searchKeywords");
-		return corpReviewDAO.searchKeywords(keywords);
+	public List<CorpInfoDTO> filterReviews(List<String> keywords) {
+		log.info("@# PageServiceImpl filterReviewsByKeywords");
+	    
+		corpReviewDAO = sqlSession.getMapper(CorpReviewDAO.class);
+	    List<CorpInfoDTO> filteredReviews = corpReviewDAO.filterReviews(keywords);
+	    
+	    return filteredReviews;
 	}
 
 	@Override

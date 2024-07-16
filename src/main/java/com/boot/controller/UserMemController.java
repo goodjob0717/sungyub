@@ -38,7 +38,7 @@ public class UserMemController {
 	}
 	
 	@RequestMapping("/login_yn")
-	public String login_yn(@RequestParam HashMap<String, String> param) {
+	public String login_yn(@RequestParam HashMap<String, String> param, Model model) {
 		log.info("@# login_yn");
 		
 		ArrayList<UserMemDTO> dtos = userService.loginyn(param);
@@ -47,6 +47,7 @@ public class UserMemController {
 			return "redirect:login";
 		} else {
 			if (param.get("user_pw").equals(dtos.get(0).getUser_pw())) {
+				model.addAttribute("user_id", param.get("user_id"));
 				return "redirect:login_ok";
 			} else {
 				return "redirect:login";

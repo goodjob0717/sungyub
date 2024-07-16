@@ -183,12 +183,13 @@
             margin-right: 20px;
             color: #888;
         }
-        .favorite-button {
-            padding: 5px 10px;
-            border: 1px solid #b1b1b1;
-            background-color: #ffffff;
-            border-radius: 5px;
-            cursor: pointer;
+        .corp-keywords {
+            /* padding: 5px 10px; */
+            text-align: center;
+            /* border: 1px solid #b1b1b1; */
+            /* background-color: #ffffff; */
+            /* border-radius: 5px; */
+            /* cursor: pointer; */
         }
         .div_page ul{
 			display: flex;
@@ -204,7 +205,7 @@
 <!-- 헤더와 푸터에 의해 가려지지 않도록 하는 부분 -->
 <div class="content">
     <div class="container">
-        <div class="flex-container">
+        <!-- <div class="flex-container">
             <div class="popular-reviews">
                 <h2>인기 기업리뷰</h2>
                 <hr>
@@ -218,14 +219,15 @@
                     </c:forEach>
                 </div>
             </div>
-
             <div class="search-reviews">
-                <h1>기업 리뷰</h1><br>
-                <p>재직자가 알려주는<br>리얼한 기업리뷰</p><br>
-                <input type="text" placeholder="어떤 기업의 리뷰가 궁금하신가요?">
-                <button>🔍</button>
+                <form method="get" id="searchForm">    
+                    <h1>기업 리뷰</h1><br>
+                    <p>재직자가 알려주는<br>리얼한 기업리뷰</p><br>
+                    <input type="text" name="keyword" value="${pageMaker.cri.keyword}" placeholder="어떤 기업의 리뷰가 궁금하신가요?">
+                    <button>🔍</button>
+                </form>
             </div>
-        </div>
+        </div> -->
 
         <div class="reviewSearch-container">
             <div class="review-keysearch">
@@ -268,14 +270,12 @@
                         <div class="review-content">
                             <p>${review.corp_name}</p>
                             <p>${review.corp_type}</p>
-                            <!-- <p>
-                                <c:forEach var="keyword" items="${review.keywords}">
-                                    #${keyword} 
+                            <p class="corp-keywords">
+                                <c:forEach var="corp_keyword" items="${review.corp_keyword}">
+                                    ${corp_keyword} &nbsp;
                                 </c:forEach>
-                            </p> -->
-                            <input type="hidden" name="corpInfo_No" value="${review.corpInfo_No}">
+                            </p>
                         </div>
-                        <button class="favorite-button">관심 기업 ☆</button>
                     </div>
                 </c:forEach>
             </div>
@@ -362,21 +362,27 @@
             });
 
             $.ajax({
-                url: '/searchKeywords',
+                url: '/filterReviews',
                 method: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({ keywords: keywordsArray }),
+                // data: JSON.stringify({ keywords: keywordsArray }),
+                data: JSON.stringify(keywordsArray), // 배열 형식으로 전송
                 success: function(data) {
                     reviewsContainer.empty();
                     $.each(data, function(index, review) {
                         const reviewDiv = $('<div class="review-list"></div>').html(`
-                            <img src="기업로고.png" alt="기업 로고">
+                        <div class="review-list">    
+                        <img src="기업로고.png" alt="기업 로고">
                             <div class="review-content">
-                                <p>${review.corp_name}</p>
-                                <p>${review.corp_type}</p>
-                                <p>#키워드 #키워드 #키워드</p>
+                                <p>${filteredReviews.corp_name}</p>
+                                <p>${filteredReviews.corp_type}</p>
+                                <p>
+                                    <c:forEach var="corp_keyword" items="${filteredReviews.corp_keyword}">
+                                        #${corp_keyword} &nbsp;
+                                    </c:forEach>
+                                </p>
                             </div>
-                            <button class="favorite-button">관심 기업 ☆</button>
+                        </div>
                         `);
                         reviewsContainer.append(reviewDiv);
                     });
@@ -427,6 +433,26 @@
 		// actionForm.submit();
 		actionForm.attr("action", "content_view").submit();
 	});//end of move_link click
+
+    var searchForm = $("#searchForm");
+
+	// Search 버튼 클릭
+	// $("#searchForm").on("click", function(e){
+	$("#searchForm button").on("click", function(e){
+		// alert("검색");
+
+		// 아래는 검색 종류까지 할 때 참고
+		// if(!searchForm.find("option:selected").val()){
+		// 	alert("검색종류를 선택하세요");
+		// 	return false;
+		// }
+
+		if(searchForm.find("option:selected").val() != "" && !searchForm.find("input[name='keyword']").val()){
+			alert("키워드를 입력하시오.");
+			return false;
+		}
+		searchForm.attr("action", "listWithSearch").submit();
+	});//end of searchForm click
 </script>
 </body>
 </html>
