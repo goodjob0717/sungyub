@@ -5,8 +5,8 @@
 <mapper namespace="com.boot.dao.CorpMemDAO">
 
     <insert id="write">
-        insert into corp_mem(corp_id, corp_pw, corp_name, corp_type, corp_email, epr_No, corp_address)
-        			 values (#{corp_id}, #{corp_pw}, #{corp_name}, #{corp_type}, #{corp_email}, #{epr_No}, #{corp_address})
+        insert into corp_mem(corp_id, corp_pw, corp_name, corp_type, corp_email, epr_No, corp_address, corp_check)
+        			 values (#{corp_id}, #{corp_pw}, #{corp_name}, #{corp_type}, #{corp_email}, #{epr_No}, #{corp_address}, 1)
     </insert>
 
     <select id="loginyn" resultType="com.boot.dto.CorpMemDTO">

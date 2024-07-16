@@ -16,7 +16,7 @@
         margin: 0;
         padding: 0;
     }
-    * 페이지 콘텐츠 영역을 헤더와 푸터 사이에 배치 */
+    /* 페이지 콘텐츠 영역을 헤더와 푸터 사이에 배치 */
     .content {
         padding-top: 12rem;  /* 헤더 높이 + 네비게이션 높이 */
         padding-bottom: 12rem;  /* 푸터 높이만큼 패딩 추가 */
@@ -70,28 +70,6 @@
         border-radius: 10px;
         padding: 20px;
         background-color: #ffffff;
-    }
-    .writereview-corpinfo img {
-        width: 100px;
-        height: 100px;
-        margin-right: 20px;
-    }
-    .corpinfo-content {
-        flex-grow: 1;
-    }
-    .corpinfo-content p {
-        margin: 5px;
-    }
-    .view-count {
-        margin-right: 20px;
-        color: #888;
-    }
-    .favorite-button {
-        padding: 5px 10px;
-        border: 1px solid #b1b1b1;
-        background-color: #ffffff;
-        border-radius: 5px;
-        cursor: pointer;
     }
     .welfares {
         margin-top: 50px;
@@ -148,14 +126,7 @@
 <div class="content">
     <div class="container">
         <div class="writereview-corpinfo">
-            <img src="기업로고.png" alt="기업 로고">
-            <div class="corpinfo-content">
-                <p>${review.corp_name}</p>
-                <p>${review.corp_type}</p>
-                <p>#키워드 #키워드 #키워드</p>
-            </div>
-            <div class="view-count">(조회수) ${review.views}</div>
-            <button class="favorite-button">관심 기업 ☆</button>
+            <h1>${corp_name}</h1>
         </div>
 
         <div class="write-container">
@@ -217,6 +188,7 @@
                 </div>
                 
                 <button type="submit" class="submit-review">작성하기</button>
+                <input type="hidden" name="corp_name" value="${corp_name}">
             </form>
         </div>
     </div>

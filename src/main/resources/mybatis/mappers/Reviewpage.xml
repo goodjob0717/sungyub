@@ -2,7 +2,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.boot.dao.PageDAO">
+<mapper namespace="com.boot.dao.ReviewPageDAO">
 
 <!--	<sql id="criteria">-->
 <!--		<if test='type == null'>-->
@@ -74,8 +74,17 @@
 <!--		</select>-->
     
 <!--    <select id="corpKeywordsList" resultType="com.boot.dto.CorpInfoDTO">-->
+
     <select id="corpKeywordsList" resultType="String">
-		select corp_keyword from corp_keywordList where corp_name=#{corp_name};
+		select distinct corp_keyword from corp_keywordList where corp_name=#{corp_name};
+    </select>
+
+    <select id="corpWelfaresList" resultType="String">
+		select distinct corp_welfare from corp_welfare where corp_name=#{corp_name};
+    </select>
+
+    <select id="corpReviewsList" resultType="String">
+		select distinct review_coment from corp_review where corp_name=#{corp_name};
     </select>
     
     <select id="getTotalCount" resultType="int">

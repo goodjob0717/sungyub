@@ -49,6 +49,7 @@
             padding: 20px;
             width: 30%;
             border-radius: 10px;
+            height: 100%; /* 높이를 부모 요소에 맞게 조정 */
         }
         .search-reviews h1 {
             margin: 0;
@@ -101,14 +102,18 @@
             border: 1px solid #b1b1b1;
             border-radius: 10px;
             padding: 20px;
+            /* padding: 10px; */
             margin: 10px;
             text-align: center;
             background-color: #ffffff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 120px;
+            /* width: 100px; */
         }
         .card img {
-            max-width: 100%;
+            /* max-width: 100%; */
+            width: 80px;
+            height: 80px;
             margin-bottom: 10px;
         }
         .review-keysearch {
@@ -205,29 +210,44 @@
 <!-- 헤더와 푸터에 의해 가려지지 않도록 하는 부분 -->
 <div class="content">
     <div class="container">
-        <!-- <div class="flex-container">
+        <div class="flex-container">
             <div class="popular-reviews">
                 <h2>인기 기업리뷰</h2>
                 <hr>
                 <div class="review-cards">
-                    <c:forEach var="hotreview" items="${hotreviews}">
+                    <!-- <c:forEach var="hotreview" items="${hotreviews}">
                         <div class="card">
                             <img src="기업로고.png" alt="기업 로고">
                             <p>${hotreview.corp_name}</p>
                             <p>${hotreview.corp_type}</p>
                         </div>
-                    </c:forEach>
+                    </c:forEach> -->
+                    <div class="card">
+                        <img src="기업로고.png" alt="기업 로고">
+                        <p>비즈니스테크</p>
+                        <p>IT 및 소프트웨어</p>
+                    </div>
+                    <div class="card">
+                        <img src="기업로고.png" alt="기업 로고">
+                        <p>스마트코어</p>
+                        <p>IT 및 소프트웨어</p>
+                    </div>
+                    <div class="card">
+                        <img src="기업로고.png" alt="기업 로고">
+                        <p>모바일코어</p>
+                        <p>IT 및 소프트웨어</p>
+                    </div>
                 </div>
             </div>
             <div class="search-reviews">
-                <form method="get" id="searchForm">    
+                <!-- <form method="get" id="searchForm">     -->
                     <h1>기업 리뷰</h1><br>
                     <p>재직자가 알려주는<br>리얼한 기업리뷰</p><br>
                     <input type="text" name="keyword" value="${pageMaker.cri.keyword}" placeholder="어떤 기업의 리뷰가 궁금하신가요?">
                     <button>🔍</button>
-                </form>
+                <!-- </form> -->
             </div>
-        </div> -->
+        </div>
 
         <div class="reviewSearch-container">
             <div class="review-keysearch">
@@ -268,7 +288,7 @@
                     <div class="review-list">
                         <img src="기업로고.png" alt="기업 로고">
                         <div class="review-content">
-                            <p>${review.corp_name}</p>
+                            <p><a class="move_link" href="${review.corp_name}">${review.corp_name}</a></p>
                             <p>${review.corp_type}</p>
                             <p class="corp-keywords">
                                 <c:forEach var="corp_keyword" items="${review.corp_keyword}">
@@ -371,7 +391,7 @@
                     reviewsContainer.empty();
                     $.each(data, function(index, review) {
                         const reviewDiv = $('<div class="review-list"></div>').html(`
-                        <div class="review-list">    
+                        <div class="review-list">
                         <img src="기업로고.png" alt="기업 로고">
                             <div class="review-content">
                                 <p>${filteredReviews.corp_name}</p>
@@ -409,7 +429,7 @@
 			actionForm.find("input[name='corpInfo_No']").remove();
 		}
 
-		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+		actionForm.find("input[name='corpInfo_No']").val($(this).attr("href"));
 		// actionForm.submit();
 		actionForm.attr("action", "corpReviewList").submit();
 	});//end of paginate_button click
@@ -422,16 +442,16 @@
 		
 		var targetBno = $(this).attr("href");
 
-		// 게시글 클릭후 뒤로가기 누른 후 다른 게시글 클릭할 때 &corpInfo_No=번호 계속 누적되는거 방지
-		var bno = actionForm.find("input[name='corpInfo_No']").val();
+		// 게시글 클릭후 뒤로가기 누른 후 다른 게시글 클릭할 때 &corp_name=번호 계속 누적되는거 방지
+		var bno = actionForm.find("input[name='corp_name']").val();
 		if(bno != ""){
-			actionForm.find("input[name='corpInfo_No']").remove();
+			actionForm.find("input[name='corp_name']").remove();
 		}
 
 		// "content_view?corpInfo_No=${dto.corpInfo_No}" 를 actionForm 으로 처리
-		actionForm.append("<input type='hidden' name='corpInfo_No' value='"+targetBno+"'>");
+		actionForm.append("<input type='hidden' name='corp_name' value='"+targetBno+"'>");
 		// actionForm.submit();
-		actionForm.attr("action", "content_view").submit();
+		actionForm.attr("action", "corpReviewContent").submit();
 	});//end of move_link click
 
     var searchForm = $("#searchForm");

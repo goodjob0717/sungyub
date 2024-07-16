@@ -3,6 +3,8 @@ package com.boot.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,7 @@ public class CorpMemController {
 	private CorpMemService corpService;
 	
 	@RequestMapping("/corp_login_yn")
-	public String login_yn(@RequestParam HashMap<String, String> param) {
+	public String login_yn(@RequestParam HashMap<String, String> param, HttpSession session) {
 		log.info("@# login_yn");
 		
 		ArrayList<CorpMemDTO> dtos = corpService.loginyn(param);
@@ -33,7 +35,9 @@ public class CorpMemController {
 			return "redirect:login";
 		} else {
 			if (param.get("corp_pw").equals(dtos.get(0).getCorp_pw())) {
-				return "redirect:login_ok";
+				session.setAttribute("corp_id", param.get("corp_id"));
+				session.setAttribute("corp_check", param.get("corp_check"));
+				return "redirect:main";
 			} else {
 				return "redirect:login";
 			}

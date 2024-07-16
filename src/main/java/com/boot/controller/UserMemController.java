@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class UserMemController {
 	}
 	
 	@RequestMapping("/login_yn")
-	public String login_yn(@RequestParam HashMap<String, String> param, Model model) {
+	public String login_yn(@RequestParam HashMap<String, String> param, HttpSession session) {
 		log.info("@# login_yn");
 		
 		ArrayList<UserMemDTO> dtos = userService.loginyn(param);
@@ -47,19 +48,13 @@ public class UserMemController {
 			return "redirect:login";
 		} else {
 			if (param.get("user_pw").equals(dtos.get(0).getUser_pw())) {
-				model.addAttribute("user_id", param.get("user_id"));
-				return "redirect:login_ok";
+				session.setAttribute("user_id", param.get("user_id"));
+				session.setAttribute("user_check", param.get("user_check"));
+				return "redirect:main";
 			} else {
 				return "redirect:login";
 			}
 		}
-	}
-	
-	@RequestMapping("/login_ok")
-	public String login_ok() {
-		log.info("@# login_ok");
-		
-		return "login_ok";
 	}
 	
 	@RequestMapping("/register")

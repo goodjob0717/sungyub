@@ -5,8 +5,8 @@
 <mapper namespace="com.boot.dao.UserMemDAO">
 
     <insert id="write">
-        insert into user_mem(user_id, user_pw, user_name, user_birthNo, user_sex, user_email, user_phone, user_address)
-        			 values (#{user_id}, #{user_pw}, #{user_name}, #{user_birthNo}, #{user_sex}, #{user_email}, #{user_phone}, #{user_address})
+        insert into user_mem(user_id, user_pw, user_name, user_birthNo, user_sex, user_email, user_phone, user_address, user_check)
+        			 values (#{user_id}, #{user_pw}, #{user_name}, #{user_birthNo}, #{user_sex}, #{user_email}, #{user_phone}, #{user_address}, 0)
     </insert>
 
     <select id="loginyn" resultType="com.boot.dto.UserMemDTO">

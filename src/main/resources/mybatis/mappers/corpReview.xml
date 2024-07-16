@@ -21,7 +21,7 @@
     	<selectKey keyProperty="review_No" order="BEFORE" resultType="int">
 	    	select ifnull(max(review_No),0)+1 from corp_review
     	</selectKey>
-		insert into corp_review(review_No, user_id, corp_name, review_coment)-->
+		insert into corp_review(review_No, user_id, corp_name, review_coment)
 				select ifnull(max(review_No),0)+1 , #{user_id}, #{corp_name}, #{review_coment} from corp_review
     </insert>
     

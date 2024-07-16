@@ -11,5 +11,6 @@
     <div class="links" style="font-size: smaller;">
         <a href="login">이전으로</a>
     </div>
+    <p>User ID: ${user_id}</p>
 </body>
 </html>

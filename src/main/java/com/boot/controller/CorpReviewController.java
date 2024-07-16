@@ -3,6 +3,8 @@ package com.boot.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.boot.dto.CorpInfoDTO;
-import com.boot.dto.Criteria;
-import com.boot.dto.PageDTO;
+import com.boot.dto.ReviewCriteria;
+import com.boot.dto.ReviewPageDTO;
 import com.boot.service.CorpReviewServiceImpl;
-import com.boot.service.PageService;
+import com.boot.service.ReviewPageService;
+import com.mysql.cj.Session;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,10 +32,10 @@ public class CorpReviewController {
     private CorpReviewServiceImpl corpreviewService;
 	
 	@Autowired
-	private PageService pageService;
+	private ReviewPageService pageService;
 
 	@GetMapping("/corpReviewList")
-    public String corpReviewList(Criteria cri, Model model) {
+    public String corpReviewList(ReviewCriteria cri, Model model) {
     	log.info("@# corpReviewList");
     	log.info("@# cri=>"+cri);
         
@@ -41,7 +44,7 @@ public class CorpReviewController {
 		log.info("@# total=>"+total);
 		
 		model.addAttribute("reviews", reviews);
-		model.addAttribute("pageMaker", new PageDTO(total, cri));
+		model.addAttribute("pageMaker", new ReviewPageDTO(total, cri));
     	
 		// reviews 리스트에서 각 CorpInfoDTO의 corp_name을 추출
 		for (CorpInfoDTO review : reviews) {
@@ -52,6 +55,7 @@ public class CorpReviewController {
 			log.info("@# corpKeywords=>" + corpKeywords);
 		}
         
+		log.info("@# reviews=>"+reviews);
 		model.addAttribute("corpKeywords", reviews);
         
         return "corpReviewList";
@@ -99,8 +103,12 @@ public class CorpReviewController {
     }
     
     @RequestMapping("/corpReviewWrite")
-    public String corpReviewWrite() {
+    public String corpReviewWrite(@RequestParam("corp_name") String corp_name, HttpSession session) {
     	log.info("@# corpReviewWrite");
+    	log.info("@# corp_name=>"+corp_name);
+    	
+    	session.setAttribute("corp_name", corp_name);
+    	log.info("@# session=>"+session);
     	
 		return "corpReviewWrite";
 	}
@@ -113,6 +121,28 @@ public class CorpReviewController {
     	corpreviewService.writeReview(param);
     	
     	return "redirect:corpReviewList";
+    }
+    
+    @GetMapping("/corpReviewContent")
+    public String corpReviewContent(@RequestParam("corp_name") String corp_name, Model model) {
+    	log.info("@# corpReviewContent");
+    	log.info("@# corp_name=>"+corp_name);
+        
+    	List<String> corpKeywords = pageService.corpKeywordsList(corp_name);
+    	log.info("@# corpKeywords=>"+corpKeywords);
+    	model.addAttribute("corpKeywords", corpKeywords);
+    	
+    	List<String> corpWelfares = pageService.corpWelfaresList(corp_name);
+    	log.info("@# corpWelfares=>"+corpWelfares);
+    	model.addAttribute("corpWelfares", corpWelfares);
+    	
+    	List<String> corpReviews = pageService.corpReviewsList(corp_name);
+    	log.info("@# corpReviews=>"+corpReviews);
+    	model.addAttribute("corpReviews", corpReviews);
+    	
+    	model.addAttribute("corp_name", corp_name);
+    	
+        return "corpReviewContent";
     }
 }
 

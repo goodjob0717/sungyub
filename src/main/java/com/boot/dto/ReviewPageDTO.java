@@ -8,14 +8,14 @@ import lombok.ToString;
 //@NoArgsConstructor
 @Getter
 @ToString
-public class PageDTO {
+public class ReviewPageDTO {
 	private int startpage;//시작페이지: 1, 11
 	private int endpage;//끝페이지: 10, 20
 	private boolean prev, next;
 	private int total;
-	private Criteria cri;//화면에 출력 갯수
+	private ReviewCriteria cri;//화면에 출력 갯수
 	
-	public PageDTO(int total, Criteria cri) {
+	public ReviewPageDTO(int total, ReviewCriteria cri) {
 		this.total = total;
 		this.cri = cri;
 		
