@@ -427,7 +427,7 @@
 			actionForm.find("input[name='corpInfo_No']").remove();
 		}
 
-		actionForm.find("input[name='corpInfo_No']").val($(this).attr("href"));
+		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
 		// actionForm.submit();
 		actionForm.attr("action", "corpReviewList").submit();
 	});//end of paginate_button click
